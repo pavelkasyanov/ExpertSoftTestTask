@@ -3,8 +3,7 @@ package by.expertsofttesttask.services.Impl;
 import by.expertsofttesttask.dao.PersonDAO;
 import by.expertsofttesttask.exeptions.ParsePersonExeption;
 import by.expertsofttesttask.models.Person;
-import by.expertsofttesttask.models.comporators.PersonComparator;
-import by.expertsofttesttask.models.comporators.PersonNameComparator;
+import by.expertsofttesttask.models.comporators.*;
 import by.expertsofttesttask.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,10 +33,10 @@ public class PersonServiceImpl implements PersonService {
     static {
         Map<String, PersonComparator> aMap = new ConcurrentHashMap<>();
         aMap.put("name", new PersonNameComparator());
-        aMap.put("surname", new PersonNameComparator());
-        aMap.put("login", new PersonNameComparator());
-        aMap.put("email", new PersonNameComparator());
-        aMap.put("phone", new PersonNameComparator());
+        aMap.put("surname", new PersonSurnameComparator());
+        aMap.put("login", new PersonLoginComparator());
+        aMap.put("email", new PersonEmailComparator());
+        aMap.put("phone", new PersomPhoneNumberComparator());
         personComparators = Collections.unmodifiableMap(aMap);
     }
 
