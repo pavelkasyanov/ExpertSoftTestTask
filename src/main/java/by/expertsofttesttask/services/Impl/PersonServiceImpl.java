@@ -33,7 +33,7 @@ public class PersonServiceImpl implements PersonService {
     static {
         Map<String, PersonComparator> aMap = new ConcurrentHashMap<>();
         aMap.put("name", new PersonNameComparator());
-        aMap.put("surname", new PersonSurnameComparator());
+        aMap.put("surname", new PersonSurnameCompator());
         aMap.put("login", new PersonLoginComparator());
         aMap.put("email", new PersonEmailComparator());
         aMap.put("phone", new PersomPhoneNumberComparator());
