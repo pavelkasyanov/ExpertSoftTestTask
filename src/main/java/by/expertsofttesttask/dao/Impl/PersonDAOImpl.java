@@ -4,6 +4,7 @@ import by.expertsofttesttask.dao.PersonDAO;
 import by.expertsofttesttask.models.Person;
 import org.springframework.cglib.core.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -11,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PersonDAOImpl implements PersonDAO {
 
-    private static List<Person> personList = new CopyOnWriteArrayList<Person>();
+    private static List<Person> personList = new ArrayList<Person>();
 
     @Override
     public void addOrUpdate(Person person) {

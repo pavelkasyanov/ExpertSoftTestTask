@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,8 @@ public class PersonServiceImpl implements PersonService {
 
     private static final int itemCountForPage = 10;
 
-    private final ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock addLock = new ReentrantLock();
+    private final ReentrantLock sortLock = new ReentrantLock();
 
     private static final Map<String, PersonComparator> personComparators;
     static {
@@ -45,7 +47,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<Person> getFromPage(int pageNumber, PersonComparator personComparator) {
+    public synchronized List<Person> getFromPage(int pageNumber, PersonComparator personComparator) {
         int begin = (pageNumber - 1) * itemCountForPage;
         if (begin > personDAO.getAll().size() || begin < 0) {
             return null;
@@ -56,19 +58,26 @@ public class PersonServiceImpl implements PersonService {
             end = personDAO.getAll().size();
         }
 
-        List<Person> allPerson = personDAO.getAll();
-        if (personComparator != null) {
-            List<Person> temp = new CopyOnWriteArrayList<>(allPerson);
-            Collections.sort(temp, personComparator);
-            allPerson = temp;
+        sortLock.lock();
+        try {
+            List<Person> allPerson = personDAO.getAll();
+            if (personComparator != null) {
+                List<Person> temp = new ArrayList(allPerson);
+                Collections.sort(temp, personComparator);
+                allPerson = temp;
+            }
+
+            return allPerson.subList(begin, end);
+        } finally {
+            sortLock.unlock();
         }
 
-        return allPerson.subList(begin, end);
+        //return null;
     }
 
     @Override
-    public void addPersonFromFile(InputStream inputStream) {
-        lock.lock();
+    public synchronized void addPersonFromFile(InputStream inputStream) {
+        addLock.lock();
         try {
             try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
                 String line = null;
@@ -91,7 +100,7 @@ public class PersonServiceImpl implements PersonService {
                 e.printStackTrace();
             }
         }finally {
-            lock.unlock();
+            addLock.unlock();
         }
     }
 
@@ -101,7 +110,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean isNextPage(int currentPageNumber) {
+    public synchronized boolean isNextPage(int currentPageNumber) {
         int pageCount = personDAO.getAll().size() / itemCountForPage;
         if (currentPageNumber < pageCount + 1 && currentPageNumber > 0){
             return true;
