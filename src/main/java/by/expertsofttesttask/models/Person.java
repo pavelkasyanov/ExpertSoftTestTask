@@ -19,6 +19,43 @@ public class Person {
         this.phoneNumber = phoneNumber;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Person))return false;
+        Person otherPerson = (Person)other;
+
+        if ((this.name == null) ? (otherPerson.name != null) : !this.name.equals(otherPerson.name)) {
+            return false;
+        }
+        if ((this.surname == null) ? (otherPerson.surname != null) : !this.surname.equals(otherPerson.surname)) {
+            return false;
+        }
+        if ((this.login == null) ? (otherPerson.login != null) : !this.login.equals(otherPerson.login)) {
+            return false;
+        }
+        if ((this.email == null) ? (otherPerson.email != null) : !this.email.equals(otherPerson.email)) {
+            return false;
+        }
+        if ((this.phoneNumber == null) ? (otherPerson.phoneNumber != null) : !this.phoneNumber.equals(otherPerson.phoneNumber)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 53 * hash + (this.surname != null ? this.surname.hashCode() : 0);
+        hash = 53 * hash + (this.login != null ? this.login.hashCode() : 0);
+        hash = 53 * hash + (this.email != null ? this.email.hashCode() : 0);
+        hash = 53 * hash + (this.phoneNumber != null ? this.phoneNumber.hashCode() : 0);
+        return hash;
+    }
+
     public String getName() {
         return name;
     }
