@@ -7,6 +7,7 @@
     });
 </script>
 <div class="row">
+    <Br/>
     <table class="table table-hover">
         <caption>Person List</caption>
         <thead>
@@ -16,6 +17,7 @@
                 <th><a href="<c:url value="/persons?sortby=login"/>">Login</a></th>
                 <th><a href="<c:url value="/persons?sortby=email"/>">Email</a></th>
                 <th><a href="<c:url value="/persons?sortby=phone"/>">Phone Number</a></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -26,27 +28,52 @@
                     <td>${person.login}</td>
                     <td>${person.email}</td>
                     <td>${person.phoneNumber}</td>
+                    <td>
+                        <form action="<c:url value="/persons/delete/${person.login}"/>" method="post">
+                            <input type="submit" value="delete" />
+                        </form>
+                    </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
     <div class="row">
-        <c:if test="${pageNumber >= 2}">
-            <c:if test="${empty sortBy}">
-                <a href="<c:url value="/persons/page/${pageNumber - 1}"/>">prev page</a>
-            </c:if>
-            <c:if test="${not empty sortBy}">
-                <a href="<c:url value="/persons/page/${pageNumber - 1}/?sortby=${sortBy}"/>">prev page</a>
-            </c:if>
-        </c:if>
-        <c:if test="${isNextPage}">
-            <c:if test="${empty sortBy}">
-                <a href="<c:url value="/persons/page/${pageNumber + 1}"/>">nex page</a>
-            </c:if>
-            <c:if test="${not empty sortBy}">
-                <a href="<c:url value="/persons/page/${pageNumber + 1}/?sortby=${sortBy}"/>">next page</a>
-            </c:if>
-        </c:if>
+        <nav>
+            <ul class="pager">
+                <c:if test="${pageNumber >= 2}">
+                    <c:if test="${empty sortBy}">
+                        <li class="previous">
+                            <a href="<c:url value="/persons/page/${pageNumber - 1}"/>">
+                                <span aria-hidden="true">&larr;</span> Previous
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${not empty sortBy}">
+                        <li class="previous">
+                            <a href="<c:url value="/persons/page/${pageNumber - 1}/?sortby=${sortBy}"/>">
+                                <span aria-hidden="true">&larr;</span> Previous
+                            </a>
+                        </li>
+                    </c:if>
+                </c:if>
+                <c:if test="${isNextPage}">
+                    <c:if test="${empty sortBy}">
+                        <li class="next">
+                            <a href="<c:url value="/persons/page/${pageNumber + 1}"/>">
+                                Next <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${not empty sortBy}">
+                        <li class="next">
+                            <a href="<c:url value="/persons/page/${pageNumber + 1}/?sortby=${sortBy}"/>">
+                                Next <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </li>
+                    </c:if>
+                </c:if>
+            </ul>
+        </nav>
     </div>
 </div>
 <jsp:include page="shared/footer.jsp" />

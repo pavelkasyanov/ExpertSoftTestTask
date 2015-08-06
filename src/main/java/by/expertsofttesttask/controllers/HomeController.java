@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String index(ModelMap model) {
-		model.addAttribute("message", "Hello world!");
+	public String index() {
 		return "index";
 	}
 }

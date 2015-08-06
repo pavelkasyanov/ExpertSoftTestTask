@@ -6,7 +6,20 @@
 		$("#menu_item_index").addClass("active");
 	});
 </script>
-<h1>${message}</h1>
-<a href="<c:url value="/persons"/>">Person list</a><Br />
-<a href="<c:url value="/persons/add"/>">Add Persons</a>
+<div class="container-fluid">
+	<Br/>
+	<div class="row well">
+		<p>
+			<h4>
+				В качестве уникального ключа для операций обновления у удаления выбран логин(login)
+			</h4>
+		</p>
+		<p>
+			<h4>
+				При добавдении происходит автоматическое обновление если запись с таким логином существует
+			</h4>
+		</p>
+
+	</div>
+</div>
 <jsp:include page="shared/footer.jsp" />

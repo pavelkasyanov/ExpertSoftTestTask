@@ -24,7 +24,7 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     PersonDAO personDAO;
 
-    private static final int itemCountForPage = 10;
+    private static final int itemCountForPage = 5;
 
     private final ReentrantLock addLock = new ReentrantLock();
     private final ReentrantLock sortLock = new ReentrantLock();
@@ -90,9 +90,12 @@ public class PersonServiceImpl implements PersonService {
                         throw new ParsePersonExeption(String.format("error arguments count in line %d '%s'",
                                                         i, line));
                     }
-
-                    personDAO.addOrUpdate(new Person(person[0], person[1],
-                            person[2], person[3], person[4]));
+                    String name = person[0].replace("\"", "");
+                    String surname = person[1].replace("\"", "");
+                    String login = person[2].replace("\"", "");
+                    String email = person[3].replace("\"", "");
+                    String phone = person[4].replace("\"", "");
+                    personDAO.addOrUpdate( new Person(name, surname, login, email, phone) );
                 }
 
             } catch (IOException e) {
@@ -121,5 +124,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonComparator getPersonCompator(String compatorName) {
         return personComparators.get(compatorName);
+    }
+
+    @Override
+    public synchronized void deletePerson(String login) {
+        if (login != null && !("".equals(login))) {
+            personDAO.deleteByLogin(login);
+        }
     }
 }

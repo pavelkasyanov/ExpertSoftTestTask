@@ -7,12 +7,18 @@
     });
 </script>
 <div class="row">
+    <Br/>
     <div class="col-md-2"></div>
     <div class="col-md-4">
         <c:if test="${not empty error}">
-        <div class="row bg-danger">
+            <div class="alert alert-danger" role="alert">
             ${error}
         </div>
+        </c:if>
+        <c:if test="${not empty message}">
+            <div class="alert alert-success" role="alert">
+                ${message}
+            </div>
         </c:if>
         <form action="<c:url value="/persons/add"/>" method="post" enctype="multipart/form-data">
             <div class="form-group">

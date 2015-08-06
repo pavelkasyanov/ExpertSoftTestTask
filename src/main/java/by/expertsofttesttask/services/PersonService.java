@@ -18,4 +18,6 @@ public interface PersonService {
     boolean isNextPage(int currentPageNumber);
 
     PersonComparator getPersonCompator(String compatorName);
+
+    void deletePerson(String login);
 }

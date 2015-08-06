@@ -64,6 +64,7 @@ public class PersonsController {
         if (!file.isEmpty()) {
             try {
                 personService.addPersonFromFile(file.getInputStream());
+                model.addAttribute("message", "Well done! You successfully added data from file");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ParsePersonExeption ex) {
@@ -72,5 +73,14 @@ public class PersonsController {
         }
 
         return "addPerson";
+    }
+
+    @RequestMapping(value = "/delete/{login}", method = RequestMethod.POST)
+    public String deletePerson(ModelMap model,
+                               @PathVariable("login") String login) {
+
+        personService.deletePerson(login);
+
+        return "redirect:/persons";
     }
 }
